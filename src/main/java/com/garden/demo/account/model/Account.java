@@ -1,5 +1,6 @@
 package com.garden.demo.account.model;
 
+import com.garden.demo.account.AccountHandler;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,13 +13,12 @@ public class Account {
   @Column(name = "username")
   private String userName;
   private String password;
-  private String accountRole;
+  private String accountRole = AccountHandler.ACCOUNT_ROLE.CUSTOMER.getCode();
 
-  public Account(String accountName, String userName, String password, String accountRole) {
+  public Account(String accountName, String userName, String password) {
     this.accountName = accountName;
     this.userName = userName;
     this.password = password;
-    this.accountRole = accountRole;
   }
 
   public Account() {
@@ -51,9 +51,9 @@ public class Account {
   }
 
 
-//  public String getPassword() {
-//    return password;
-//  }
+  public String getPassword() {
+    return password;
+  }
 
   public void setPassword(String password) {
     this.password = password;

@@ -1,6 +1,6 @@
 package com.garden.demo.account.model;
 
-public class AccountRequest {
+public class AccountDTO {
     private String accountName;
     private String userName;
     private String password;
@@ -19,10 +19,6 @@ public class AccountRequest {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {

@@ -1,28 +1,32 @@
 package com.garden.demo.account;
 
 import com.garden.demo.account.model.Account;
-import com.garden.demo.account.model.AccountRequest;
+import com.garden.demo.account.model.AccountDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.ServerResponse;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
     private AccountHandler accountHandler;
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @GetMapping("/profile")
+    public Mono<ResponseEntity> profileAccount(@RequestParam("id") String id){
+       return accountHandler.getAccount(Integer.parseInt(id)).flatMap(it ->
+               Mono.just(ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(it, AccountDTO.class))));
+    }
 
     @PostMapping("/register")
-    public Mono<ResponseEntity> registerAccount(@RequestBody AccountRequest account){
-        return accountHandler.createAccount(account).flatMap(it ->
+    public Mono<ResponseEntity> registerAccount(@RequestBody Account account){
+        return  accountHandler.createAccount(account).flatMap(it ->
                 Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("register account "+it.getUserName()+" success.")));
     }
 
