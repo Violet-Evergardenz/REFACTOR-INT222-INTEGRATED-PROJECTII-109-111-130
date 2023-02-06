@@ -21,4 +21,8 @@ public class AccountService {
     public Mono<Account> getAccount(long id) {
         return Mono.just(accountsRepository.findById(id).orElseThrow(()-> new MessageException(HttpStatus.NOT_FOUND,"find not found ")));
     }
+
+    public Mono<Account> editPassword(Account acc){
+        return Mono.just(accountsRepository.save(acc));
+    }
 }

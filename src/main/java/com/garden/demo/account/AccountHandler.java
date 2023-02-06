@@ -19,6 +19,25 @@ public class AccountHandler {
         return accountService.getAccount(id);
     }
 
+    public Mono<String> editPassword (Account account, long id, String newPassword){
+        if(this.validateInfoRegister(newPassword,this.validatePasswordRegex)){
+            throw new MessageException(HttpStatus.BAD_REQUEST,"invalid password at least seven characters, special character, number, upper case character ");
+        }
+        if(!this.validateInfoRegister(newPassword,this.validateWhiteSpace)){
+            throw new MessageException(HttpStatus.BAD_REQUEST,"invalid password have whitespace");
+        }
+        return accountService.getAccount(id).flatMap(it -> {
+            if(it.getPassword().equals(account.getPassword())){
+                System.out.println("come?");
+                it.setPassword(newPassword);
+                accountService.editPassword(it);
+                return Mono.just("Change password success.");
+            } else {
+                return Mono.error(new MessageException(HttpStatus.BAD_REQUEST,"password is incorrect"));
+            }
+        });
+    }
+
     public Mono<Account> createAccount(Account acc) {
         if(this.validateInfoRegister(acc.getPassword(),this.validatePasswordRegex)){
             throw new MessageException(HttpStatus.BAD_REQUEST,"invalid password at least seven characters, special character, number, upper case character ");

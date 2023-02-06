@@ -1,7 +1,8 @@
 package com.garden.demo.account;
 
 import com.garden.demo.account.model.Account;
-import com.garden.demo.account.model.AccountDTO;
+import com.garden.demo.account.model.AccountRequest;
+import com.garden.demo.account.model.AccountResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,13 @@ public class AccountController {
     @GetMapping("/profile")
     public Mono<ResponseEntity> profileAccount(@RequestParam("id") String id){
        return accountHandler.getAccount(Integer.parseInt(id)).flatMap(it ->
-               Mono.just(ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(it, AccountDTO.class))));
+               Mono.just(ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(it, AccountResponse.class))));
+    }
+
+    @PutMapping("/changepassword")
+    public Mono<ResponseEntity> changePassword(@RequestBody AccountRequest account){
+        return  accountHandler.editPassword(modelMapper.map(account,Account.class),account.getAccountId(),account.getNewPassword()).flatMap(it ->
+                Mono.just(ResponseEntity.status(HttpStatus.OK).body(it)));
     }
 
     @PostMapping("/register")
@@ -29,6 +36,9 @@ public class AccountController {
         return  accountHandler.createAccount(account).flatMap(it ->
                 Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("register account "+it.getUserName()+" success.")));
     }
+
+
+
 
 
 }
