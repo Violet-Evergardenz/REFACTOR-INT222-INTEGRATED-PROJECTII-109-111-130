@@ -31,13 +31,23 @@ public class AccountController {
                 Mono.just(ResponseEntity.status(HttpStatus.OK).body(it)));
     }
 
+    @PutMapping("/updateprofile")
+    public Mono<ResponseEntity> updateProfile(@RequestBody AccountRequest account){
+        return accountHandler.editProfile(account).flatMap(it ->
+                Mono.just(ResponseEntity.status(HttpStatus.OK).body("update account name to : "+it.getAccountName()+" success.")));
+    }
+
     @PostMapping("/register")
     public Mono<ResponseEntity> registerAccount(@RequestBody Account account){
         return  accountHandler.createAccount(account).flatMap(it ->
                 Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("register account "+it.getUserName()+" success.")));
     }
 
-
+    @DeleteMapping("/delete/{id}")
+    public Mono<ResponseEntity> removeAccount(@PathVariable long id){
+        return accountHandler.deleteAccount(id).flatMap(it ->
+                Mono.just(ResponseEntity.status(HttpStatus.OK).body("delete account "+it.getUserName()+" success.")));
+    }
 
 
 

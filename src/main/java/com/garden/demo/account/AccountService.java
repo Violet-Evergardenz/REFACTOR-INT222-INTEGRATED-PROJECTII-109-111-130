@@ -22,7 +22,19 @@ public class AccountService {
         return Mono.just(accountsRepository.findById(id).orElseThrow(()-> new MessageException(HttpStatus.NOT_FOUND,"find not found ")));
     }
 
+    public Mono<Account[]> getAllAccountByUserName(String username){
+        return Mono.just(accountsRepository.findAllByUserName(username));
+    }
+
     public Mono<Account> editPassword(Account acc){
         return Mono.just(accountsRepository.save(acc));
+    }
+
+    public Mono<Account> editProfile(Account account){
+        return Mono.just(accountsRepository.save(account));
+    }
+
+    public void deleteAccount(long id){
+       accountsRepository.deleteById(id);
     }
 }
