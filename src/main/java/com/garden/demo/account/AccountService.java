@@ -21,7 +21,7 @@ public class AccountService {
     public Mono<Account> getAccount(long id) {
         return Mono.just(accountsRepository.findById(id).orElseThrow(()-> new MessageException(HttpStatus.NOT_FOUND,"find not found ")));
     }
-
+//.orElseThrow(()-> new MessageException(HttpStatus.NOT_FOUND,"find not found "))
     public Mono<Account[]> getAllAccountByUserName(String username){
         return Mono.just(accountsRepository.findAllByUserName(username));
     }

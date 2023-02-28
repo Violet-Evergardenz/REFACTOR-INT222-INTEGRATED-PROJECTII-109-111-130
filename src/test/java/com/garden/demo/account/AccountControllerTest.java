@@ -1,6 +1,8 @@
 package com.garden.demo.account;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garden.demo.account.model.Account;
+import com.garden.demo.account.model.AccountRequest;
 import com.garden.demo.account.model.AccountResponse;
 import com.garden.demo.exception.MessageException;
 import org.junit.Before;
@@ -8,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,12 +21,12 @@ import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpStatusCodeException;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
@@ -34,7 +37,8 @@ public class AccountControllerTest {
     private AccountHandler accountHandler;
     @Mock
     private AccountService accountService;
-
+    @Mock
+    private ModelMapper modelMapper;
 
     private MockMvc mockMvc;
 
@@ -61,6 +65,34 @@ public class AccountControllerTest {
         verify(accountHandler).getAccount(1);
 
     }
-
+//disrup mock modelmapper ไม่ผ่าน 1.manual map 2. find fix modelmapper
+//    @Test
+//    public void changePasswordSuccess() throws Exception {
+//        Account account = new Account();
+//        account.setAccountId(1);
+//        account.setAccountName("test");
+//        account.setPassword("test");
+//        account.setUserName("test");
+//
+//        AccountRequest accountRequest = new AccountRequest();
+//        accountRequest.setAccountId(1);
+//        accountRequest.setAccountName("test");
+//        accountRequest.setPassword("test");
+//        accountRequest.setNewPassword("test");
+//        accountRequest.setUserName("test");
+//
+//        String requestBody = "{\"accountId\":1,\"accountName\":\"test\",\"userName\":\"test\",\"password\":\"test\",\"newPassword\":\"test\"}";
+//
+//        when(modelMapper.map(accountRequest, Account.class)).thenReturn(account);
+//        when(accountHandler.editPassword(account, accountRequest.getAccountId(), accountRequest.getNewPassword()))
+//                .thenReturn(Mono.just("Change password success."));
+//
+//        mockMvc.perform(MockMvcRequestBuilders
+//                        .put("/account/changepassword")
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                        .content(requestBody))
+//                .andExpect(status().isOk());
+//
+//    }
 
 }

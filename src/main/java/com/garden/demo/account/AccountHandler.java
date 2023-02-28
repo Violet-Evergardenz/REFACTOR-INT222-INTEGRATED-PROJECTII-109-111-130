@@ -19,10 +19,10 @@ public class AccountHandler {
     private AccountService accountService;
 
     public Mono<Account> getAccount(int id){
-        return accountService.getAccount(id);
+        return accountService.getAccount(id) ;
     }
 
-    public Mono<String> editPassword (Account account, long id, String newPassword){
+    public Mono<String> editPassword (Account account,long id, String newPassword){
         if(this.validateInfoRegister(newPassword,this.validatePasswordRegex)){
             throw new MessageException(HttpStatus.BAD_REQUEST,"invalid password at least seven characters, special character, number, upper case character ");
         }
