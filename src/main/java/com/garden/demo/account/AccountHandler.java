@@ -22,7 +22,7 @@ public class AccountHandler {
         return accountService.getAccount(id) ;
     }
 
-    public Mono<String> editPassword (Account account,long id, String newPassword){
+    public Mono<String> editPassword (String oldPassword,long id, String newPassword){
         if(this.validateInfoRegister(newPassword,this.validatePasswordRegex)){
             throw new MessageException(HttpStatus.BAD_REQUEST,"invalid password at least seven characters, special character, number, upper case character ");
         }
@@ -30,7 +30,7 @@ public class AccountHandler {
             throw new MessageException(HttpStatus.BAD_REQUEST,"invalid password have whitespace");
         }
         return accountService.getAccount(id).flatMap(it -> {
-            if(it.getPassword().equals(account.getPassword())){
+            if(it.getPassword().equals(oldPassword)){
                 it.setPassword(newPassword);
                 accountService.editPassword(it);
                 return Mono.just("Change password success.");

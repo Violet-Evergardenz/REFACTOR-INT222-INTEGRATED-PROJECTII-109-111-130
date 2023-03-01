@@ -65,34 +65,29 @@ public class AccountControllerTest {
         verify(accountHandler).getAccount(1);
 
     }
-//disrup mock modelmapper ไม่ผ่าน 1.manual map 2. find fix modelmapper
-//    @Test
-//    public void changePasswordSuccess() throws Exception {
-//        Account account = new Account();
-//        account.setAccountId(1);
-//        account.setAccountName("test");
-//        account.setPassword("test");
-//        account.setUserName("test");
-//
+
+    @Test
+    public void changePasswordSuccess() throws Exception {
+
 //        AccountRequest accountRequest = new AccountRequest();
 //        accountRequest.setAccountId(1);
 //        accountRequest.setAccountName("test");
 //        accountRequest.setPassword("test");
 //        accountRequest.setNewPassword("test");
 //        accountRequest.setUserName("test");
-//
-//        String requestBody = "{\"accountId\":1,\"accountName\":\"test\",\"userName\":\"test\",\"password\":\"test\",\"newPassword\":\"test\"}";
-//
+
+        String requestBody = "{\"accountId\":1,\"accountName\":\"test\",\"userName\":\"test\",\"password\":\"test\",\"newPassword\":\"test\"}";
+
 //        when(modelMapper.map(accountRequest, Account.class)).thenReturn(account);
-//        when(accountHandler.editPassword(account, accountRequest.getAccountId(), accountRequest.getNewPassword()))
-//                .thenReturn(Mono.just("Change password success."));
-//
-//        mockMvc.perform(MockMvcRequestBuilders
-//                        .put("/account/changepassword")
-//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                        .content(requestBody))
-//                .andExpect(status().isOk());
-//
-//    }
+        when(accountHandler.editPassword("test", 1, "test"))
+                .thenReturn(Mono.just("Change password success."));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/account/changepassword")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody))
+                .andExpect(status().isOk());
+
+    }
 
 }

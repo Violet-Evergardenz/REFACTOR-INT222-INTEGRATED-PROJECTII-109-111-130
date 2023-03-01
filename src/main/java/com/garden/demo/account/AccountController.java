@@ -27,7 +27,8 @@ public class AccountController {
 
     @PutMapping("/changepassword")
     public Mono<ResponseEntity> changePassword(@RequestBody AccountRequest account){
-        return  accountHandler.editPassword(modelMapper.map(account,Account.class),account.getAccountId(),account.getNewPassword()).flatMap(it ->
+//        modelMapper.map(account,Account.class);
+        return  accountHandler.editPassword(account.getPassword(),account.getAccountId(),account.getNewPassword()).flatMap(it ->
                 Mono.just(ResponseEntity.status(HttpStatus.OK).body(it)));
     }
 
